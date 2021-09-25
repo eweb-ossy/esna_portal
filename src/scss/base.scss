@@ -1,0 +1,42 @@
+@import "import/common";
+@import "import/mainContent";
+
+.top-menu {
+    width: 100%;
+    padding: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    @include sp {
+        padding: 10vw;
+    }
+    .bloc {
+        width: 300px;
+        margin-bottom: 20px;
+        .top-menu-img {
+            width: 300px;
+            height: 225px;
+            background-color: #ccc;
+            overflow: hidden;
+            .img {
+                display: block;
+                width: 100%;
+                height: 100%;;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                transition: all .3s ease-out;
+                &:hover {
+                    opacity: .8;
+                    transform: scale(1.1);
+                }
+            }
+        }
+        .top-menu-title {
+            font-size: 15px;
+            width: 100%;
+            text-align: center;
+            padding: 1em 0;
+        }
+    }
+}
