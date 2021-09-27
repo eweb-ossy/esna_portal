@@ -154,3 +154,63 @@ function save_custom_fields($post_id) {
         update_post_meta($post_id, 'staff_boom', $_POST['staff_boom']);
     }
 }
+
+// アポラン取得　ショートコード
+add_shortcode('aporan', 'aporan_func');
+function aporan_func($atts) {
+    // for ($i=1; $i <=6 ; $i++) { 
+        
+    // }
+    $other_db = new wpdb('ossy', 'ossy0417', 'esna_aporan_data', '153.126.169.133');
+    $other_db->show_errors();
+
+    $month_views = ['今月', '先月', '先々月'];
+
+    for ($i=0; $i<3; $i++) { 
+        $now = new DateTime();
+        $now->sub(DateInterval::createFromDateString($i.' month'));
+        $year = $now->format('Y');
+        $month = $now->format('m');
+
+        $types = ['get', 'fin'];
+        foreach($types as $type) {
+            echo '<div class="aparan-date">'.$month_views[$i]." ".$now->format('Y年m月')." ";
+            echo $type === 'get' ? '獲得' : '完了';
+            echo 'ランキング</div>';
+            $sql = "SELECT year, month, user_id, name, type, CAST(point_num AS DECIMAL(10,2)) AS point_num, CAST(minus AS DECIMAL(10,2)) AS minus, CAST(count AS DECIMAL(10,1)) AS count, CAST(time_num AS DECIMAL(10,0)) AS time_num FROM aporan_data WHERE year = {$year} AND month = {$month} AND type = '{$type}' ORDER BY point_num DESC";
+            $result = $other_db->get_results($sql);
+            if ($result) {
+                if ($type === 'get') {
+                    echo '<table><thead><tr><th style="width:50px;">順位</th><th>名前</th><th>獲得P</th><th>獲得件数</th><th>稼働時間</th></tr></thead><tbody>';
+                } else {
+                    echo '<table><thead><tr><th style="width:50px;">順位</th><th>名前</th><th>完了P</th><th>完了件数</th><th>マイナスP</th></tr></thead><tbody>';
+                }
+                $no = 1;
+                $view_no = 1;
+                $temp_point = NULL;
+                foreach ($result as $value) {
+                    $view_no = $temp_point !== $value->point_num ? $no : $view_no;
+                    $time = $value->time_num > 0 ? $value->time_num / 60 : 0;
+                    $minus = $value->minus == 0 ? '' : $value->minus;
+                    echo '<tr class="rank_'.$view_no.'">';
+                    echo '<td class="int">'.$view_no.'</td>';
+                    echo '<td class="txt">'.$value->name.'</td>';
+                    echo '<td class="int">'.$value->point_num.'</td>';
+                    echo '<td class="int">'.$value->count.'</td>';
+                    if ($type === 'get') {
+                        echo '<td class="int">'.number_format($time, 1).' 時間</td>';
+                    }
+                    if ($type === 'fin') {
+                        echo '<td class="int">'.$minus.'</td>';
+                    }
+                    echo '</tr>';
+                    $temp_point = $value->point_num;
+                    $no++;
+                }
+                echo '</tbody></table>';
+            } else {
+                echo '<div class="data-none">データがありません</div>';
+            }
+        }
+    }
+}
