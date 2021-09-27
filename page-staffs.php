@@ -14,7 +14,7 @@
         </div>
         <section class="main-staff">
             <?php
-            $staffs = get_posts(['post_type' => 'staff', 'orderby' => 'meta_value_num', 'order' => 'ASC']);
+            $staffs = get_posts(['post_type' => 'staff', 'orderby' => 'meta_value_num', 'order' => 'ASC', 'numberposts' => -1]);
             foreach ($staffs as $staff): ?>
             <div class="staff-bloc">
                 <?php $url = wp_get_attachment_url( get_post_thumbnail_id($staff->ID) ); ?>
