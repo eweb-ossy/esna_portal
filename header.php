@@ -10,4 +10,15 @@
     <?php wp_head(); ?>
 </head>
 <body>
-<!-- <header class="header">ヘッダー</header> -->
+<header class="header">
+    <div class="left">
+        <img src="<?php echo get_template_directory_uri(); ?>/images/ESNAlogo.jpg" alt="">
+        <div class="title-text">ESNAgrp</div>
+    </div>
+    <div class="right">
+        <div class="hamburger-menu">
+            <input type="checkbox" id="menu-btn-check">
+            <label for="menu-btn-check" class="menu-btn"><span></span></label>
+        </div>
+    </div>
+</header>

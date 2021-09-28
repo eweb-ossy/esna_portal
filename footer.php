@@ -7,5 +7,24 @@
     <div class="footer-center"></div>
     <div class="footer-right">ESNA Corporate.</div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+<script>
+    jQuery(function() {
+        function sideView(windowSize) {
+            if (windowSize > 1000) {
+                $('.side').show();
+            } else {
+                $('.side').hide();
+            }
+        }
+        $(window).on('resize', function() {
+            var windowSize = $(window).width();
+            sideView(windowSize);
+        })
+        $('#menu-btn-check').on('click', function() {
+            $('.side').toggle();
+        });
+    });
+</script>
 </body>
 </html>
